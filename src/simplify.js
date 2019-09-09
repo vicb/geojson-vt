@@ -1,7 +1,7 @@
 
 // calculate simplification data using optimized Douglas-Peucker algorithm
 
-export default function simplify(coords, first, last, sqTolerance) {
+export default function simplify(coords, first, last, sqTolerance, isPolygon) {
     let maxSqDist = sqTolerance;
     const mid = (last - first) >> 1;
     let minPosToMid = last - first;
@@ -32,9 +32,9 @@ export default function simplify(coords, first, last, sqTolerance) {
     }
 
     if (maxSqDist > sqTolerance) {
-        if (index - first > 3) simplify(coords, first, index, sqTolerance);
-        coords[index + 2] = maxSqDist;
-        if (last - index > 3) simplify(coords, index, last, sqTolerance);
+        if (index - first > 3) simplify(coords, first, index, sqTolerance, isPolygon);
+        coords[index + 2] = isPolygon ? maxSqDist * maxSqDist : maxSqDist;
+        if (last - index > 3) simplify(coords, index, last, sqTolerance, isPolygon);
     }
 }
 
